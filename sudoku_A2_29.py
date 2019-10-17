@@ -1,7 +1,8 @@
 import sys
 import copy
 import Queue
-
+import time
+start_time = time.time()
 rows = "ABCDEFGHI"
 cols = "123456789"
 
@@ -52,7 +53,6 @@ class Sudoku(object):
 		self.ans = copy.copy(puzzle) # self.ans is a list of lists
 
 	def solve(self):
-		#TODO: Your code here
 		self.AC3() # Preprocessing
 		solved_puzzle = self.backtracking_search({})
 
@@ -236,9 +236,11 @@ if __name__ == "__main__":
 
 	sudoku = Sudoku(puzzle)
 	ans = sudoku.solve()
-
+	
 	with open(sys.argv[2], 'a') as f:
 		for i in range(9):
 			for j in range(9):
 				f.write(str(ans[i][j]) + " ")
 			f.write("\n")
+	
+	print("--- %s seconds ---" % (time.time() - start_time)) # measures time taken to execute code

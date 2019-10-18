@@ -56,7 +56,6 @@ class Sudoku(object):
 		self.AC3() # Preprocessing
 		solved_puzzle = self.backtracking_search({})
 
-		# don't print anything here. just return the answer
 		# self.ans is a list of lists
 		return self.ans
 
@@ -91,12 +90,17 @@ class Sudoku(object):
 
 		return domains	
 
-	#____________________________________________________________	
+	# Preprocessing step to reduce search space. Time complexity: O(n^2*d^3)
 	def AC3(self):
 		q = Queue.Queue()
-
-		for constraint in self.constraints:
-			q.put(constraint)
+		
+		for var in squares:
+			if self.puzzle[get_row(var)][get_col(var)] > 0:
+				for constraint in self.constraints:
+					if var == constraint[0]:
+						q.put(constraint)
+		#for constraint in self.constraints:
+		#	q.put(constraint)
 
 		while not q.empty():
 			x = q.get()
@@ -150,7 +154,7 @@ class Sudoku(object):
 
 					if check:
 						result = self.backtrack(assignment) # Calls backtrack again for the next variable assignment
-						if len(result) != 0: # != {"FAILURE"}:
+						if len(result) != 0:
 							self.puzzle[get_row(var)][get_col(var)] = value
 							return result
 

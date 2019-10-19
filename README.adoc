@@ -11,7 +11,6 @@
 :note-caption: :information_source:
 :warning-caption: :warning:
 :experimental:
-= NUS CS3243 Assignment
 
 == Project Objectives
 This project is an assessed assignment from the module CS3243 (Introduction to Artificial Intelligence) in NUS. Requirements are to write a program that solves sudoku puzzles by modelling it as a constraint satisfaction problem (CSP).

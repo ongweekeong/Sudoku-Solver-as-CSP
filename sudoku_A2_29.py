@@ -2,7 +2,7 @@ import sys
 import copy
 import Queue
 import time
-start_time = time.time()
+
 rows = "ABCDEFGHI"
 cols = "123456789"
 
@@ -51,11 +51,11 @@ class Sudoku(object):
 		self.domains = self.get_domains()
 		self.constraints = set((x, y) for x in squares for y in self.neighbours[x])
 		self.ans = copy.copy(puzzle) # self.ans is a list of lists
-
+		self.current = {}
 	def solve(self):
 		self.AC3() # Preprocessing
-		solved_puzzle = self.backtracking_search({})
-
+		#solve_puzzle = self.backtracking_search(self.AC3({}))
+		solve_puzzle = self.backtracking_search({})
 		# self.ans is a list of lists
 		return self.ans
 
@@ -91,11 +91,12 @@ class Sudoku(object):
 		return domains	
 
 	# Preprocessing step to reduce search space. Time complexity: O(n^2*d^3)
+	# Also adds the variables already assigned values in the initial state to the assignment data structure.
 	def AC3(self):
 		q = Queue.Queue()
-		
 		for var in squares:
 			if self.puzzle[get_row(var)][get_col(var)] > 0:
+				#assignment[var] = self.puzzle[get_row(var)][get_col(var)]
 				for constraint in self.constraints:
 					if var == constraint[0]:
 						q.put(constraint)
@@ -113,6 +114,20 @@ class Sudoku(object):
 					q.put((neighbour, x[0]))
 
 		return True
+	'''#fake AC3. Just a preprocessing function.
+	def AC3(self, assignment):
+		for var in squares:
+			value = self.puzzle[get_row(var)][get_col(var)]
+			if value > 0:
+				print(value)
+				if (self.forward_checking(var, value, assignment)):
+					print('test')
+					assignment[var] = value
+					for neighbour in self.neighbours:
+						if value in self.domains[neighbour]:
+							self.domains[neighbour].remove(value)
+				print(assignment)
+		return assignment'''
 
 	def revise(self, xi, xj):	
 		revised = False
@@ -134,7 +149,9 @@ class Sudoku(object):
 		return False		
 
 	def backtracking_search(self, assignment):
-
+	#	for var in squares:
+	#		if self.puzzle[get_row(var)][get_col(var)] > 0:
+	#			assignment[var] = self.puzzle[get_row(var)][get_col(var)]
 		return self.backtrack(assignment)
 
 	def backtrack(self, assignment):
@@ -143,10 +160,9 @@ class Sudoku(object):
  		
  		# Keeps the current copy of domain to be used for a backtrack in the future
 		domain = copy.deepcopy(self.domains)    
-
 		var = self.select_variable(assignment)
 
-		if var in self.domains:	
+		if var in self.domains and var not in assignment:
 			for value in self.domains[var]:
 				if self.isConsistent(var, value, assignment):
 					assignment[var] = value
@@ -237,14 +253,12 @@ if __name__ == "__main__":
 				if j == 9:
 					i += 1
 					j = 0
-
+	start_time = time.time()
 	sudoku = Sudoku(puzzle)
 	ans = sudoku.solve()
-	
+	print("--- %s seconds ---" % (time.time() - start_time)) # measures time taken to execute code
 	with open(sys.argv[2], 'a') as f:
 		for i in range(9):
 			for j in range(9):
 				f.write(str(ans[i][j]) + " ")
 			f.write("\n")
-	
-	print("--- %s seconds ---" % (time.time() - start_time)) # measures time taken to execute code

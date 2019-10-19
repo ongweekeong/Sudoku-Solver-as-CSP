@@ -1,0 +1,21 @@
+= Sudoku Solver as a CSP
+:site-section: ProjectPortfolio
+:toc:
+:toc-title:
+:sectnums:
+:imagesDir: docs/images
+:stylesDir: docs/stylesheets
+:xrefstyle: full
+
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:warning-caption: :warning:
+:experimental:
+= NUS CS3243 Assignment
+
+== Project Objectives
+This project is an assessed assignment from the module CS3243 (Introduction to Artificial Intelligence) in NUS. Requirements are to write a program that solves sudoku puzzles by modelling it as a constraint satisfaction problem (CSP).
+In the assignment, test cases used for assessing are guaranteed to be valid and well-formed.
+
+== Project Overview
+This program employs the use of the backtracking algorithm to solve the puzzles. Input puzzles are pre-processed with a function that is a hybrid of the AC-3 algorithm and Forward Checking (for early failure detection). This function is used every time the backtracking algorithm does another assignment.The minimum remaining values (MRV) heuristic was also used in this program. 

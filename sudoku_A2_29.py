@@ -96,12 +96,9 @@ class Sudoku(object):
 		q = Queue.Queue()
 		for var in squares:
 			if self.puzzle[get_row(var)][get_col(var)] > 0:
-				#assignment[var] = self.puzzle[get_row(var)][get_col(var)]
 				for constraint in self.constraints:
 					if var == constraint[0]:
 						q.put(constraint)
-		#for constraint in self.constraints:
-		#	q.put(constraint)
 
 		while not q.empty():
 			x = q.get()
@@ -114,20 +111,6 @@ class Sudoku(object):
 					q.put((neighbour, x[0]))
 
 		return True
-	'''#fake AC3. Just a preprocessing function.
-	def AC3(self, assignment):
-		for var in squares:
-			value = self.puzzle[get_row(var)][get_col(var)]
-			if value > 0:
-				print(value)
-				if (self.forward_checking(var, value, assignment)):
-					print('test')
-					assignment[var] = value
-					for neighbour in self.neighbours:
-						if value in self.domains[neighbour]:
-							self.domains[neighbour].remove(value)
-				print(assignment)
-		return assignment'''
 
 	def revise(self, xi, xj):	
 		revised = False
@@ -149,9 +132,6 @@ class Sudoku(object):
 		return False		
 
 	def backtracking_search(self, assignment):
-	#	for var in squares:
-	#		if self.puzzle[get_row(var)][get_col(var)] > 0:
-	#			assignment[var] = self.puzzle[get_row(var)][get_col(var)]
 		return self.backtrack(assignment)
 
 	def backtrack(self, assignment):
@@ -211,7 +191,6 @@ class Sudoku(object):
 
 			if not self.domains[neighbour]: # when domain of neighbour becomes empty
 				return False
-				#return {"FAILURE"}
 
 			if len(self.domains[neighbour]) == 1:
 				neighbour_value = self.domains[neighbour][0]
@@ -222,7 +201,6 @@ class Sudoku(object):
 
 					if not self.domains[check_neighbour]:
 						return False
-					#	return {"FAILURE"}	
 
 		return True
 

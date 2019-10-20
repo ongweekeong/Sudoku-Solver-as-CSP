@@ -53,7 +53,7 @@ class Sudoku(object):
 		self.ans = copy.copy(puzzle) # self.ans is a list of lists
 
 	def solve(self):
-		self.backtracking_search(self.AC3({}))
+		self.backtracking_search(self.preprocess({}))
 		# self.ans is a list of lists
 		return self.ans
 
@@ -89,7 +89,7 @@ class Sudoku(object):
 		return domains	
 
 	# Preprocessing step to reduce search space. Hybrid of FC and AC3.
-	def AC3(self, assignment):
+	def preprocess(self, assignment):
 		for var in squares:
 			if self.puzzle[get_row(var)][get_col(var)] > 0:
 				if (self.forward_checking(var, self.puzzle[get_row(var)][get_col(var)], assignment)):

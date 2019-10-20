@@ -1,7 +1,7 @@
 import sys
 import copy
 import Queue
-import time
+
 
 rows = "ABCDEFGHI"
 cols = "123456789"
@@ -213,11 +213,10 @@ if __name__ == "__main__":
 				if j == 9:
 					i += 1
 					j = 0
-	start_time = time.time()
+	
 	sudoku = Sudoku(puzzle)
 	ans = sudoku.solve()
 	
-	print("--- %s seconds ---" % (time.time() - start_time)) # measures time taken to execute code
 	with open(sys.argv[2], 'a') as f:
 		for i in range(9):
 			for j in range(9):
